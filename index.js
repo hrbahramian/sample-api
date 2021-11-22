@@ -126,3 +126,24 @@ application.post('/login', (request, response, next) => {
 
 application.listen(port, () => console.log(`The application is listening to port ${port}`));
 
+let PrivateRoute = ({ children, ...rest }) => {
+  let customer = localStorage.getItem('customer');
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        customer ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: location }
+            }}
+          />
+        )
+      }
+    />
+  );
+}
+
